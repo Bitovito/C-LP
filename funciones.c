@@ -49,7 +49,14 @@ void print(lista* a){
 		dato *informacion = at(a.i);
 		char tipo = informacion->tipo;
 		if (tipo == 'i'){
-			//print
+			printf("%d,",*(int *)informacion->contenido);
+		}
+		else if (tipo == 'f'){
+			printf("%f,",*(float *)informacion->contenido;
+		}
+		else{
+			lista *l = (lista *)informacion->contenido;
+			print(l)	
 		}
 	}
 	printf("]\n");
@@ -67,14 +74,13 @@ float average(lista* a){
             suma += *(float *)informacion->contenido;
             n++;
         } 
-        else{
+       	else{
             float innersum = sum(a->actual->info.contenido);
             lista *l = (lista *)informacion->contenido;
             if (length(l)!= 0){
-				n++;
-				suma += (innersum/length(l));
-			}
-			
+		n++;
+		suma += (innersum/length(l));
+	    }	
         }
     }
     int prom = suma/n;
