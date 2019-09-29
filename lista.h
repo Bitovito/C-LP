@@ -15,13 +15,12 @@ typedef struct  nodo {
     struct  nodo* next;
 }nodo;
 
-void init(lista *a);
-void clear(lista *a);
-void insert(lista *a,int i,dato d);
-void append(lista *a,dato d);
-void remov(lista *a,int i);
-int length(lista *a);
-dato* at(lista *a,int i);
-void movetoStart(lista *a);
+void init(lista *);
+void clear(lista *);
+void insert(lista *,int,dato);
+void append(lista *,dato);
+void remov(lista *,int);
+int length(lista *);
+dato* at(lista *,int);
+void movetoStart(lista *);
 dato dataList(lista *);
-void clearHelp(lista *);
