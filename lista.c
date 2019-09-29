@@ -6,21 +6,28 @@ void init(lista* a){
     a->head = a->actual = a->tail = (nodo *)malloc(sizeof(nodo));
     a->length = 0;
 }
-///////////////////////////////////////////
-void clear(lista* a){//////////////////////Nosé si
-    a->actual = a->head;///////////////////esta 
-    clearHelp(a);//////////////////////////wea
-    free(a->head);/////////////////////////funcione,
-}//////////////////////////////////////////prefiero
-///////////////////////////////////////////revisarla
-void clearHelp(lista* a){//////////////////porque
-    nodo *puntero = a->actual;/////////////no me tinca
-    while(a->actual->next->next != NULL){//la 
-        clearHelp(a);//////////////////////wea
-    }//////////////////////////////////////xdxdxd
-    free(puntero->next);///////////////////xdxdxd
-}//////////////////////////////////////////xdxdxd
-///////////////////////////////////////////
+
+void clear(lista *a){;
+    a->actual = a->head;
+    while (a->length > 2){
+        nodo *aux = a->actual->next;
+        a->actual->next = a->actual->next->next;
+        a->length--;
+        free((void *)aux);
+    }
+    if (a->length == 2){
+        free((void *)a->actual->next->next);
+        a->length--;
+    }
+    if (a->length == 1){
+        free((void *)a->actual->next);
+        a->length--;
+    }
+    if (a->length == 0){
+        free((void *)a);
+    }
+}
+
 void insert(lista* a, int i, dato d){
     a->actual = a->head;
     int x;
@@ -44,13 +51,10 @@ int length(lista* a){
 }
 
 void append(lista* a, dato d){
-    nodo *aux = a->actual->next;
-    a->actual->next = (nodo *)malloc(sizeof(nodo));
-    a->actual->next->info = d;
-    a->actual->next->next = aux;
-    if (a->actual == a->tail){
-        a->tail = a->actual->next;
-    }
+    a->tail->next = (nodo *)malloc(sizeof(nodo));
+    a->tail->next->info = d;
+    a->tail = a->tail->next;
+    a->tail->next = NULL;
     a->length++;
 }
 
@@ -61,13 +65,25 @@ void remov(lista* a, int i){
         a->actual = a->actual->next;
     }
 
-    nodo *aux = a->actual->next->next;
-    free(a->actual->next);
-    a->actual->next = aux;
-    if (a->actual->next->next == NULL){
-        a->tail = a->actual->next;
+    if(a->length == 0){
+        return;
+    }
+    nodo *aux = a->actual->next;
+    a->actual->next = a->actual->next->next;
+    if (aux == a->tail){
+        a->tail = a->actual;
+    }
+    else if ((a->actual == a->tail)&&(a->length != 1)){
+        nodo *temp;
+        temp = a->head;
+        while (temp->next != a->actual) {
+            temp = temp->next;
+        }
+        a->actual = temp;
+        a->tail = a->actual;
     }
     a->length--;
+    free((void *)aux);
 }
 
 dato* at(lista* a, int i){
@@ -95,19 +111,4 @@ dato dataList(lista* l){
     datazo.contenido = l;
     datazo.tipo = 'l';
     return datazo;
-}
-
-/*
-movetoStart
-Mueve la poscicion "actual" de la lista 'a' al primer nodo (no fantasma). 
--------------------------------------------------
-Inputs:
-lista* a: Lista cuyo valor actual será modificado.
--------------------------------------------------
-Output:
-void: Sin output.
-*/
-void movetoStart(lista* a){
-    a->actual = a->head;
-    a->actual = a->actual->next;
 }
