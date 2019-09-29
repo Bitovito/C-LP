@@ -3,8 +3,7 @@
 #include "funciones.h"
 
 lista* map(lista* a, dato (*f)(dato)){
-    movetoStart(a);
-    lista* b = (lista *)malloc(sizeof(lista));////lista nueva = lista b
+    lista* b = (lista *)malloc(sizeof(lista));
     init(b);
     int i;
     for(i = 0 ; i < length(a) ; i++){
@@ -24,7 +23,6 @@ lista* map(lista* a, dato (*f)(dato)){
 }
 
 float sum(lista* a){
-    movetoStart(a);
     float suma = 0;
     int i;
     for(i = 0 ; i < length(a) ; i++){
@@ -45,29 +43,43 @@ float sum(lista* a){
 }
 
 void print(lista* a){
-	movetoStart(a);
 	printf("[");
 	int i;
 	for (i = 0; i < length(a); i++){
 		dato *informacion = at(a,i);
 		char tipo = informacion->tipo;
-		if (tipo == 'i'){
-			printf("%d,",*(int *)informacion->contenido);
+        if (i < length(a)-1){
+            if (tipo == 'i'){
+                printf("%d,",*(int *)informacion->contenido);
+            }
+            else if (tipo == 'f'){
+                printf("%f,",*(float *)informacion->contenido);
+            }
+            else if (tipo == 'l'){
+                lista *l = (lista *)informacion->contenido;
+                print(l);
+                printf(",");
+            }
 		}
-		else if (tipo == 'f'){
-			printf("%f,",*(float *)informacion->contenido);
-		}
-		else{
-			lista *l = (lista *)informacion->contenido;
-			print(l);
-		}
+        else{
+            if (tipo == 'i'){
+                printf("%d",*(int *)informacion->contenido);
+            }
+            else if (tipo == 'f'){
+                printf("%f",*(float *)informacion->contenido);
+            }
+            else if (tipo == 'l'){
+                lista *l = (lista *)informacion->contenido;
+                print(l);
+            }
+        }
 	}
-	printf("]\n");
+    printf("]");
 }
 
 float average(lista* a){
-    movetoStart(a);
-    float suma;
+    float suma = 0;
+    float suma_inner = 0;
     int n = 0;
     int i;
     for(i = 0 ; i < length(a) ; i++){
@@ -82,44 +94,19 @@ float average(lista* a){
             n++;
         }
        	else{
-            float innersum = sum(a->actual->info.contenido);
             lista *l = (lista *)informacion->contenido;
-            if (length(l)!= 0){
-		n++;
-		suma += (innersum/length(l));
-	    }	
+            suma_inner += average(l);
+            if ((length(l) != 0) && (suma_inner != 0)){
+                suma += suma_inner;
+                n++;
+            }
         }
     }
-    int prom = suma/n;
-    return prom;
-}
-
-int main(){
-    lista* z = (lista *)malloc(sizeof(lista));
-    init(z);
-    printf("Lista iniciada\n");
-
-    void* v = NULL;
-    
-    int num = 1337;
-
-    dato dato;
-    dato.tipo = 'i';
-    v = &num;
-    dato.contenido = v;
-    append(z, dato);
-
-    int num1 = 69;
-    dato.tipo = 'i';
-    v = &num1;
-    dato.contenido = v;
-    append(z, dato);
-
-    printf("Promedio es: %f\n",average(z));
-    printf("Suma es: %f\n",sum(z));
-    //clear(z);
-    print(z);
-    
-    return 0;
+    if(n != 0){
+        return suma/n;
+    }
+    else{
+        return 0;
+    }
 }
 
