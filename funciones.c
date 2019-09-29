@@ -25,7 +25,7 @@ lista* map(lista* a, dato (*f)(dato)){
 
 float sum(lista* a){
     movetoStart(a);
-    float suma;
+    float suma = 0;
     int i;
     for(i = 0 ; i < length(a) ; i++){
         dato* informacion = at(a,i);
@@ -74,12 +74,10 @@ float average(lista* a){
         dato* informacion = at(a,i);
         char tipo = informacion->tipo;
         if (tipo == 'i'){
-            printf("%d\n", *(int *)informacion->contenido);////////////////flag
             suma += *(int *)informacion->contenido;
             n++;
         } 
         else if(tipo == 'f'){
-            printf("%f\n", *(float *)informacion->contenido);////////////////flag
             suma += *(float *)informacion->contenido;
             n++;
         }
