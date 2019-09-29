@@ -1,6 +1,6 @@
 #include "lista.h"
 
-lista *map(lista *a,dato(*f)(dato));
-float sum(lista *a);
-void print(lista *a);
-float average(lista *a);
+lista *map(lista *,dato(*)(dato));
+float sum(lista *);
+void print(lista *);
+float average(lista *);
