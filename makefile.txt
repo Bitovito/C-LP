@@ -1,0 +1,8 @@
+all: lista funciones
+	gcc lista.o funciones.o -o tarea2
+	
+funciones: funciones.c funciones.h
+	gcc funciones.c -c
+	
+lista: lista.c lista.h
+	gcc lista.c -c
